@@ -148,6 +148,18 @@ std::string diagram_entry(float *mainParameters, int i, int j)
     return std::format("{:4}", std::round(std::fmod(OCTAVE_CENTS * (i * mainParameters[P_XSTEP] + j * mainParameters[P_YSTEP] + mainParameters[P_TRANSPOSE]), OCTAVE_CENTS)));
 }
 
+float check(float x)
+{
+    if (std::isnan(x))
+    {
+        throw std::runtime_error("nan");
+    }
+    if (std::isinf(x))
+    {
+        throw std::runtime_error("inf");
+    }
+    return x;
+}
 
 float parse_step(std::string s)
 {
@@ -158,7 +170,7 @@ float parse_step(std::string s)
     {
         top = std::stoi(s.substr(0, slash));
         bottom = std::stoi(s.substr(slash + 1));
-        return std::log2(((float) top)/((float) bottom));
+        return check(std::log2(((float) top)/((float) bottom)));
     }
 
     slash = s.find('\\');
@@ -166,10 +178,10 @@ float parse_step(std::string s)
     {
         top = std::stoi(s.substr(0, slash));
         bottom = std::stoi(s.substr(slash + 1));
-        return ((float) top)/((float) bottom);
+        return check(((float) top)/((float) bottom));
     }
 
-    return std::stof(s)/OCTAVE_CENTS;
+    return check(std::stof(s)/OCTAVE_CENTS);
 }
 
 void GUISetup(MyPlugin *plugin)
