@@ -2,6 +2,10 @@
 
 #include <windowsx.h>
 
+#include <elements.hpp>
+
+namespace ce = cycfi::elements;
+
 struct GUI
 {
     HWND window;
