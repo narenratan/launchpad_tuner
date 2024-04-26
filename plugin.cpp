@@ -4,7 +4,6 @@
 #include <assert.h>
 #include <math.h>
 #include <sstream>
-#include <format>
 
 #include "clap/clap.h"
 #include "libMTSMaster.h"
@@ -145,7 +144,9 @@ static void set_tuning(double x, double y, double t)
 
 std::string diagram_entry(float *mainParameters, int i, int j)
 {
-    return std::format("{:4}", std::round(std::fmod(OCTAVE_CENTS * (i * mainParameters[P_XSTEP] + j * mainParameters[P_YSTEP] + mainParameters[P_TRANSPOSE]), OCTAVE_CENTS)));
+    std::string s = std::to_string((int) std::round(std::fmod(OCTAVE_CENTS * (i * mainParameters[P_XSTEP] + j * mainParameters[P_YSTEP] + mainParameters[P_TRANSPOSE]), OCTAVE_CENTS)));
+    s.insert(s.begin(), 4 - s.size(), ' ');
+    return s;
 }
 
 float check(float x)
