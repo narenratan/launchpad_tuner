@@ -14,12 +14,16 @@ jobs:
             sudo apt-get update
             sudo apt-get upgrade -y
             sudo apt-get install -y libcairo2-dev libwebp-dev g++
-            cmake -B build
+            cmake -B build -D CMAKE_BUILD_TYPE=Release
             cmake --build build
+            OUTPUT_DIR=LaunchpadTuner_$(git rev-parse --short HEAD)_linux
+            echo output_dir=$OUTPUT_DIR >> $GITHUB_ENV
+            mkdir $OUTPUT_DIR
+            cp build/LaunchpadTuner.clap $OUTPUT_DIR
       - uses: actions/upload-artifact@v4
         with:
-            name: build_linux
-            path: build
+            name: ${{ env.output_dir }}
+            path: ${{ env.output_dir }}
   build_mac:
     runs-on: macos-14
     steps:
@@ -30,12 +34,16 @@ jobs:
       - name: Build
         run: |
             brew install pkg-config cairo webp
-            cmake -B build
+            cmake -B build -D CMAKE_BUILD_TYPE=Release
             cmake --build build
+            OUTPUT_DIR=LaunchpadTuner_$(git rev-parse --short HEAD)_mac
+            echo output_dir=$OUTPUT_DIR >> $GITHUB_ENV
+            mkdir $OUTPUT_DIR
+            cp build/LaunchpadTuner.clap $OUTPUT_DIR
       - uses: actions/upload-artifact@v4
         with:
-            name: build_mac
-            path: build
+            name: ${{ env.output_dir }}
+            path: ${{ env.output_dir }}
   build_windows:
     runs-on: windows-latest
     steps:
@@ -45,11 +53,15 @@ jobs:
             submodules: 'true'
       - name: Build
         run: |
-          ./libs/vcpkg/bootstrap-vcpkg.bat
-          ./libs/vcpkg/vcpkg.exe install pkgconf:x64-windows-static cairo:x64-windows-static libwebp:x64-windows-static
-          cmake -B build
-          cmake --build build --config Release
+            ./libs/vcpkg/bootstrap-vcpkg.bat
+            ./libs/vcpkg/vcpkg.exe install pkgconf:x64-windows-static cairo:x64-windows-static libwebp:x64-windows-static
+            cmake -B build
+            cmake --build build --config Release
+            $OUTPUT_DIR = "LaunchpadTuner_$(git rev-parse --short HEAD)_windows"
+            echo output_dir=$OUTPUT_DIR >> $env:GITHUB_ENV
+            mkdir $OUTPUT_DIR
+            cp build/Release/LaunchpadTuner.clap $OUTPUT_DIR
       - uses: actions/upload-artifact@v4
         with:
-            name: build_windows
-            path: build
+            name: ${{ env.output_dir }}
+            path: ${{ env.output_dir }}
