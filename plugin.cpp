@@ -145,7 +145,7 @@ static void set_tuning(double x, double y, double t)
 std::string diagram_entry(float *mainParameters, int i, int j)
 {
     std::string s = std::to_string((int) std::round(std::fmod(OCTAVE_CENTS * (i * mainParameters[P_XSTEP] + j * mainParameters[P_YSTEP] + mainParameters[P_TRANSPOSE]), OCTAVE_CENTS)));
-    s.insert(s.begin(), 4 - s.size(), ' ');
+    s.insert(s.begin(), 5 - s.size(), ' ');
     return s;
 }
 
