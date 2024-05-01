@@ -7,6 +7,9 @@
 
 #include "clap/clap.h"
 #include "libMTSMaster.h"
+#include <elements.hpp>
+
+namespace ce = cycfi::elements;
 
 #define OCTAVE_CENTS (1200.0)
 
@@ -122,13 +125,7 @@ static const clap_plugin_state_t extensionState = {
     },
 };
 
-#if defined(_WIN32)
-#include "gui_w32.cpp"
-#elif defined(__linux__)
-#include "gui_x11.cpp"
-#elif defined(__APPLE__)
-#include "gui_mac.cpp"
-#endif
+#include "gui_plumbing.cpp"
 
 static void set_tuning(double x, double y, double t)
 {
