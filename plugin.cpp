@@ -23,7 +23,7 @@
 struct MyPlugin {
     clap_plugin_t plugin;
     const clap_host_t *host;
-    float mainParameters[P_COUNT];
+    double mainParameters[P_COUNT];
     struct GUI *gui;
     const clap_host_posix_fd_support_t *hostPOSIXFDSupport;
 };
@@ -112,12 +112,12 @@ static const clap_plugin_params_t extensionParams = {
 static const clap_plugin_state_t extensionState = {
     .save = [] (const clap_plugin_t *_plugin, const clap_ostream_t *stream) -> bool {
         MyPlugin *plugin = (MyPlugin *) _plugin->plugin_data;
-        return sizeof(float) * P_COUNT == stream->write(stream, plugin->mainParameters, sizeof(float) * P_COUNT);
+        return sizeof(double) * P_COUNT == stream->write(stream, plugin->mainParameters, sizeof(double) * P_COUNT);
     },
 
     .load = [] (const clap_plugin_t *_plugin, const clap_istream_t *stream) -> bool {
         MyPlugin *plugin = (MyPlugin *) _plugin->plugin_data;
-        bool success = sizeof(float) * P_COUNT == stream->read(stream, plugin->mainParameters, sizeof(float) * P_COUNT);
+        bool success = sizeof(double) * P_COUNT == stream->read(stream, plugin->mainParameters, sizeof(double) * P_COUNT);
         return success;
     },
 };
@@ -142,14 +142,14 @@ static void set_tuning(double x, double y, double t)
     }
 }
 
-std::string diagram_entry(float *mainParameters, int i, int j)
+std::string diagram_entry(double *mainParameters, int i, int j)
 {
     std::string s = std::to_string((int) std::round(std::fmod(OCTAVE_CENTS * (i * mainParameters[P_XSTEP] + j * mainParameters[P_YSTEP] + mainParameters[P_TRANSPOSE]), OCTAVE_CENTS)));
     s.insert(s.begin(), 5 - s.size(), ' ');
     return s;
 }
 
-float check(float x)
+double check(double x)
 {
     if (std::isnan(x))
     {
@@ -162,7 +162,7 @@ float check(float x)
     return x;
 }
 
-float parse_step(std::string s)
+double parse_step(std::string s)
 {
     int slash, top, bottom;
 
@@ -171,7 +171,7 @@ float parse_step(std::string s)
     {
         top = std::stoi(s.substr(0, slash));
         bottom = std::stoi(s.substr(slash + 1));
-        return check(std::log2(((float) top)/((float) bottom)));
+        return check(std::log2(((double) top)/((double) bottom)));
     }
 
     slash = s.find('\\');
@@ -179,7 +179,7 @@ float parse_step(std::string s)
     {
         top = std::stoi(s.substr(0, slash));
         bottom = std::stoi(s.substr(slash + 1));
-        return check(((float) top)/((float) bottom));
+        return check(((double) top)/((double) bottom));
     }
 
     return check(std::stof(s)/OCTAVE_CENTS);
@@ -187,7 +187,7 @@ float parse_step(std::string s)
 
 void GUISetup(MyPlugin *plugin)
 {
-    float *mainParameters = plugin->mainParameters;
+    double *mainParameters = plugin->mainParameters;
     ce::view *view = plugin->gui->view;
 
     auto xStep = ce::input_box(std::to_string(OCTAVE_CENTS * mainParameters[P_XSTEP]));
