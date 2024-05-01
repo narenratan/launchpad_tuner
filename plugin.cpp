@@ -398,6 +398,7 @@ static const clap_plugin_gui_t extensionGUI = {
     .create = [] (const clap_plugin_t *_plugin, const char *api, bool isFloating) -> bool {
         if (!extensionGUI.is_api_supported(_plugin, api, isFloating)) return false;
         MyPlugin *plugin = (MyPlugin *) _plugin->plugin_data;
+        set_tuning(plugin->mainParameters[P_XSTEP], plugin->mainParameters[P_YSTEP], plugin->mainParameters[P_TRANSPOSE]);
         GUICreate(plugin);
         GUISetup(plugin);
         return true;
