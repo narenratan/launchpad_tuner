@@ -11,7 +11,8 @@ There are three parameters:
 The plugin displays the pitch in cents (modulo 1200) for each Launchpad key in
 a grid.
 
-Builds for Windows, Mac, and Linux are available on the releases page.
+Builds for Windows, Mac, and Linux are available on the [releases
+page](https://github.com/narenratan/launchpad_tuner/releases).
 
 Steps and transpose can be entered in:
 
@@ -27,8 +28,8 @@ Steps and transpose can be entered in:
 
 ![ratios](images/ratios.png)
 
-The Launchpad needs to be in programmer mode - see the Launchpad [Programmer's
-reference
+The Launchpad needs to be in programmer mode or custom mode four (for the
+Launchpad X). See the Launchpad [Programmer's reference
 manual](https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20X%20-%20Programmers%20Reference%20Manual.pdf)
 (pdf).
 
