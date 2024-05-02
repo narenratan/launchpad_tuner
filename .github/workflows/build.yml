@@ -46,6 +46,9 @@ jobs:
             mkdir $OUTPUT_DIR
             codesign --force -s "${{ secrets.DEVELOPER_ID_APPLICATION}}" -v build/LaunchpadTuner.clap --deep --strict --timestamp
             cp build/LaunchpadTuner.clap $OUTPUT_DIR
+            cp build/LaunchpadTuner.clap .
+            zip $OUTPUT_DIR.zip LaunchpadTuner.clap
+            xcrun notarytool submit $OUTPUT_DIR.zip --apple-id ${{ secrets.NOTARIZATION_USERNAME }} --team-id ${{ secrets.TEAM_ID }} --password ${{ secrets.NOTARIZATION_PASSWORD }} --wait
       - uses: actions/upload-artifact@v4
         with:
             name: ${{ env.output_dir }}
