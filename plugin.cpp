@@ -199,7 +199,7 @@ void GUISetup(MyPlugin *plugin)
         }
     }
 
-    xStep.second->on_enter = [mainParameters, labels, view] (std::string_view text)->bool {
+    xStep.second->on_text = [mainParameters, labels, view] (std::string_view text)->bool {
         try {
             mainParameters[P_XSTEP] = parse_step(std::string(text));
         } catch (std::exception&) {
@@ -217,7 +217,7 @@ void GUISetup(MyPlugin *plugin)
 
     auto yStep = ce::input_box(std::to_string(OCTAVE_CENTS * mainParameters[P_YSTEP]));
 
-    yStep.second->on_enter = [mainParameters, labels, view] (std::string_view text)->bool {
+    yStep.second->on_text = [mainParameters, labels, view] (std::string_view text)->bool {
         try {
             mainParameters[P_YSTEP] = parse_step(std::string(text));
         } catch (std::exception&) {
@@ -235,7 +235,7 @@ void GUISetup(MyPlugin *plugin)
 
     auto transpose = ce::input_box(std::to_string(OCTAVE_CENTS * mainParameters[P_TRANSPOSE]));
 
-    transpose.second->on_enter = [mainParameters, labels, view] (std::string_view text)->bool {
+    transpose.second->on_text = [mainParameters, labels, view] (std::string_view text)->bool {
         try {
             mainParameters[P_TRANSPOSE] = parse_step(std::string(text));
         } catch (std::exception&) {
